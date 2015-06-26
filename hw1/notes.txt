@@ -1,0 +1,4 @@
+-wish i remembered the 'let' syntax... thought i don't know if i would have used it, i would have liked to compare it to the single-line function definitions that i came up with... some of them "felt" a little too long
+-i kept confusing $ and . -- i'll have to do some more work 
+- sumDigits implemented in "point-free" style .. i think
+- used more parens than i recall seeing in other haskell code... something to look into
