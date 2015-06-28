@@ -52,7 +52,7 @@ getMove secret guess = Move guess exactMatchesCount nonExactMatchesCount
 -- Exercise 4 -----------------------------------------
 
 isConsistent :: Move -> Code -> Bool
-isConsistent = undefined
+isConsistent (Move guess exact nonExact) code = (getMove code guess) == Move guess exact nonExact
 
 -- Exercise 5 -----------------------------------------
 
