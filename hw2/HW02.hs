@@ -45,7 +45,9 @@ matches one two = sum $ map (uncurry min) (countColors one `zip` countColors two
 
 -- Construct a Move from a guess given the actual code
 getMove :: Code -> Code -> Move
-getMove = undefined
+getMove secret guess = Move guess exactMatchesCount nonExactMatchesCount
+  where exactMatchesCount = exactMatches secret guess
+        nonExactMatchesCount = (matches secret guess) - exactMatchesCount
 
 -- Exercise 4 -----------------------------------------
 
