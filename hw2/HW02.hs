@@ -35,9 +35,7 @@ exactMatches (x:xs) (y:ys)
 countColors :: Code -> [Int]
 countColors code = map countColor colors
   where countColor :: Peg -> Int
-        countColor peg = length $ filter matchesPeg code
-          where matchesPeg :: Peg -> Bool
-                matchesPeg otherPeg = otherPeg == peg
+        countColor peg = length $ filter (== peg) code
 
 -- Count number of matches between the actual code and the guess
 matches :: Code -> Code -> Int
