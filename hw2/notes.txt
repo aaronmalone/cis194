@@ -1,0 +1,2 @@
+- I've picked up the use of "where" clauses pretty easily
+- I seem to have an instinct for knowing when an implementation an be made more concise. But it's probably the case that my current implementations could be improved even further in ways that I don't yet recognize.
