@@ -39,7 +39,7 @@ countColors code = map countColor colors
 
 -- Count number of matches between the actual code and the guess
 matches :: Code -> Code -> Int
-matches = undefined
+matches one two = sum $ map (uncurry min) (countColors one `zip` countColors two)
 
 -- Exercise 3 -----------------------------------------
 
