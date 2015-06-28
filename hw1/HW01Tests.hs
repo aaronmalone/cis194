@@ -33,23 +33,27 @@ ex2Tests = [ Test "toRevDigitsTest" testToRevDigit
 
 -- Exercise 3 -----------------------------------------
 
+testDoubleEveryOther :: ([Integer], [Integer]) -> Bool
+testDoubleEveryOther (xs, ys) = doubleEveryOther xs == ys
+
+makeDoubleEveryOtherTest :: [Integer] -> [Integer] -> String -> Test
+makeDoubleEveryOtherTest xs ys name = Test ("Double every other test: " ++ name) testDoubleEveryOther [(xs, ys)]
+
 ex3Tests :: [Test]
-ex3Tests = []
+ex3Tests = [ makeDoubleEveryOtherTest [] [] "empty"
+           , makeDoubleEveryOtherTest [4, 5] [4, 10] "4 and 5"
+           , makeDoubleEveryOtherTest [7, 8, 9] [7, 16, 9] "7, 8, 9"
+           ]
 
 -- Exercise 4 -----------------------------------------
 
+makeSumDigitsTest :: [Integer] -> Integer -> Test
+makeSumDigitsTest ints sum = testF1 "sum digits test" sumDigits [(ints, sum)]
+
 ex4Tests :: [Test]
-ex4Tests = []
-
--- Exercise 5 -----------------------------------------
-
-ex5Tests :: [Test]
-ex5Tests = []
-
--- Exercise 6 -----------------------------------------
-
-ex6Tests :: [Test]
-ex6Tests = []
+ex4Tests = [ makeSumDigitsTest [1, 2, 3, 4] 10
+           , makeSumDigitsTest [4, 5, 6] 15
+           ]
 
 -- All Tests ------------------------------------------
 
@@ -58,6 +62,4 @@ allTests = concat [ ex1Tests
                   , ex2Tests
                   , ex3Tests
                   , ex4Tests
-                  , ex5Tests
-                  , ex6Tests
                   ]

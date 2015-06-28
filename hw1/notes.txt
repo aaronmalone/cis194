@@ -2,3 +2,4 @@
 -i kept confusing $ and . -- i'll have to do some more work 
 - sumDigits implemented in "point-free" style .. i think
 - used more parens than i recall seeing in other haskell code... something to look into
+- i find it interesting that the hanoi function doesn't move the pegs themselves but produces a list of moves
