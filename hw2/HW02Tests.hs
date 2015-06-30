@@ -50,26 +50,6 @@ ex4Tests = [ testF2 "isConsistent test" isConsistent
              ]
            ]
 
--- Exercise 5 -----------------------------------------
-
-ex5Tests :: [Test]
-ex5Tests = []
-
--- Exercise 6 -----------------------------------------
-
-ex6Tests :: [Test]
-ex6Tests = []
-
--- Exercise 7 -----------------------------------------
-
-ex7Tests :: [Test]
-ex7Tests = []
-
--- Bonus ----------------------------------------------
-
-bonusTests :: [Test]
-bonusTests = []
-
 -- All Tests ------------------------------------------
 
 allTests :: [Test]
@@ -77,8 +57,4 @@ allTests = concat [ ex1Tests
                   , ex2Tests
                   , ex3Tests
                   , ex4Tests
-                  , ex5Tests
-                  , ex6Tests
-                  , ex7Tests
-                  , bonusTests
                   ]

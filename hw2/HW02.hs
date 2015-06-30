@@ -72,21 +72,13 @@ allCodes n = concatMap codesWithOneMorePeg (allCodes (n - 1))
 -- Exercise 7 -----------------------------------------
 
 solve :: Code -> [Move]
-solve secret = solve' secret (allCodes (length secret)) []
+solve secret = solveHelper secret (allCodes (length secret)) []
 
--- get a move from the first guess and the secret
--- if move is exact match, return as list
--- if move is not exact match, filter all consistent remaining move
-solve' :: Code -> [Code] -> [Move] -> [Move]
-solve' s (next:remaining) attempted
-  | s == next = reverse newAttemptedList
-  | otherwise = solve' s consistent newAttemptedList
+solveHelper :: Code -> [Code] -> [Move] -> [Move]
+solveHelper secret (next:remaining) attempted
+  | secret == next = reverse newAttemptedList
+  | otherwise      = solveHelper secret consistentCodes newAttemptedList
   where newAttemptedList = nextMove : attempted
-        consistent       = filter (isConsistent nextMove) remaining
-        nextMove         = getMove s next
-solve' _ [] _ = error "Exhausted all options!"
-
--- Bonus ----------------------------------------------
-
-fiveGuess :: Code -> [Move]
-fiveGuess = undefined
+        consistentCodes  = filter (isConsistent nextMove) remaining
+        nextMove         = getMove secret next
+solveHelper _ [] _ = error "Exhausted all options!"
