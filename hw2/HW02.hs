@@ -27,11 +27,10 @@ exactMatches [] _ = 0
 exactMatches _ [] = 0
 exactMatches (x:xs) (y:ys)
   | x == y    = 1 + exactMatches xs ys
-  | otherwise = exactMatches xs ys 
+  | otherwise = exactMatches xs ys
 
 -- Exercise 2 -----------------------------------------
 
--- For each peg in xs, count how many times is occurs in ys
 countColors :: Code -> [Int]
 countColors code = map countColor colors
   where countColor :: Peg -> Int
@@ -39,25 +38,25 @@ countColors code = map countColor colors
 
 -- Count number of matches between the actual code and the guess
 matches :: Code -> Code -> Int
-matches one two = sum $ map (uncurry min) (countColors one `zip` countColors two)
+matches xs ys = sum $ map (uncurry min) (countColors xs `zip` countColors ys)
 
 -- Exercise 3 -----------------------------------------
 
 -- Construct a Move from a guess given the actual code
 getMove :: Code -> Code -> Move
-getMove secret guess = Move guess exactMatchesCount nonExactMatchesCount
-  where exactMatchesCount = exactMatches secret guess
-        nonExactMatchesCount = (matches secret guess) - exactMatchesCount
+getMove secret guess = Move guess exact nonExact
+  where exact    = exactMatches secret guess
+        nonExact = (matches secret guess) - exact
 
 -- Exercise 4 -----------------------------------------
 
 isConsistent :: Move -> Code -> Bool
-isConsistent original@(Move guess _ _) code = getMove code guess == original
+isConsistent m@(Move guess _ _) code = getMove code guess == m
 
 -- Exercise 5 -----------------------------------------
 
 filterCodes :: Move -> [Code] -> [Code]
-filterCodes = undefined
+filterCodes move codes = filter (isConsistent move) codes
 
 -- Exercise 6 -----------------------------------------
 
