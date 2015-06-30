@@ -50,6 +50,7 @@ getMove secret guess = Move guess exact nonExact
 
 -- Exercise 4 -----------------------------------------
 
+--  a Code is consistent with a Move if the Code could have been the secret that generated that move
 isConsistent :: Move -> Code -> Bool
 isConsistent m@(Move guess _ _) code = getMove code guess == m
 
@@ -61,12 +62,29 @@ filterCodes move codes = filter (isConsistent move) codes
 -- Exercise 6 -----------------------------------------
 
 allCodes :: Int -> [Code]
-allCodes = undefined
+allCodes 0 = []
+allCodes 1 = map (:[]) colors
+allCodes n = concatMap codesWithOneMorePeg (allCodes (n - 1))
+  where codesWithOneMorePeg :: Code -> [Code]
+        codesWithOneMorePeg code = map (:code) colors
+
 
 -- Exercise 7 -----------------------------------------
 
 solve :: Code -> [Move]
-solve = undefined
+solve secret = solve' secret (allCodes (length secret)) []
+
+-- get a move from the first guess and the secret
+-- if move is exact match, return as list
+-- if move is not exact match, filter all consistent remaining move
+solve' :: Code -> [Code] -> [Move] -> [Move]
+solve' s (next:remaining) attempted
+  | s == next = reverse newAttemptedList
+  | otherwise = solve' s consistent newAttemptedList
+  where newAttemptedList = nextMove : attempted
+        consistent       = filter (isConsistent nextMove) remaining
+        nextMove         = getMove s next
+solve' _ [] _ = error "Exhausted all options!"
 
 -- Bonus ----------------------------------------------
 
