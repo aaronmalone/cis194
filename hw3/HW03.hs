@@ -41,6 +41,9 @@ extend originalState name value = newState
 empty :: State
 empty _ = 0
 
+newState :: String -> Int -> State
+newState str num = extend empty str num
+
 -- Exercise 2 -----------------------------------------
 
 evalE :: State -> Expression -> Int
@@ -89,10 +92,18 @@ ds = desugar
 -- Exercise 4 -----------------------------------------
 
 evalSimple :: State -> DietStatement -> State
-evalSimple = undefined
+evalSimple state dietStatement = case dietStatement of
+  DAssign var expr           -> extend state var (evalE state expr)
+  DIf expr thenStmt elseStmt -> if evalE state expr == 1 then es state thenStmt else es state elseStmt
+  DWhile expr stmt           -> if evalE state expr == 1 then es state (DSequence stmt (DWhile expr stmt)) else state
+  DSequence stmt1 stmt2      -> es (es state stmt1) stmt2
+  DSkip                      -> state
+
+
+es = evalSimple;
 
 run :: State -> Statement -> State
-run = undefined
+run state stmt = evalSimple state $ desugar stmt
 
 -- Programs -------------------------------------------
 
@@ -112,6 +123,9 @@ factorial = For (Assign "Out" (Val 1))
                 (Assign "In" (Op (Var "In") Minus (Val 1)))
                 (Assign "Out" (Op (Var "In") Times (Var "Out")))
 
+runFactorial :: Int -> Int
+runFactorial = runStatement "In" "Out" factorial
+
 
 {- Calculate the floor of the square root of the input
 
@@ -127,6 +141,9 @@ squareRoot = slist [ Assign "B" (Val 0)
                        (Incr "B")
                    , Assign "B" (Op (Var "B") Minus (Val 1))
                    ]
+
+runSquareRoot :: Int -> Int
+runSquareRoot = runStatement "A" "B" squareRoot
 
 {- Calculate the nth Fibonacci number
 
@@ -166,3 +183,6 @@ fibonacci = slist [ Assign "F0" (Val 1)
                            )
                        )
                   ]
+
+runStatement :: String -> String -> Statement -> Int -> Int
+runStatement inputVariable outputVariable statement input = (run (newState inputVariable input) statement) outputVariable
