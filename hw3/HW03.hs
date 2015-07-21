@@ -35,8 +35,8 @@ type State = String -> Int
 
 extend :: State -> String -> Int -> State
 extend originalState name value = newState
-  where newState x | x == name = value
-                   | otherwise = originalState x
+  where newState str | str == name = value
+                     | otherwise   = originalState str
 
 empty :: State
 empty _ = 0
@@ -44,7 +44,26 @@ empty _ = 0
 -- Exercise 2 -----------------------------------------
 
 evalE :: State -> Expression -> Int
-evalE = undefined
+evalE state expr = case expr of
+  Var name           -> state name
+  Val num            -> num
+  Op expr1 bop expr2 ->
+      let result1 = evalE state expr1
+          result2 = evalE state expr2
+            in case bop of
+              Plus   -> result1 + result2
+              Minus  -> result1 - result2
+              Times  -> result1 * result2
+              Divide -> result1 `div` result2
+              Gt     -> boolToInt (result1 > result2)
+              Ge     -> boolToInt (result1 == result2 || result1 > result2)
+              Lt     -> boolToInt (result1 < result2)
+              Le     -> boolToInt (result1 == result2 || result1 < result2)
+              Eql    -> boolToInt (result1 == result2)
+
+boolToInt :: Bool -> Int
+boolToInt True  = 1
+boolToInt False = 0
 
 -- Exercise 3 -----------------------------------------
 
@@ -56,7 +75,15 @@ data DietStatement = DAssign String Expression
                      deriving (Show, Eq)
 
 desugar :: Statement -> DietStatement
-desugar = undefined
+desugar (Assign var expr)           = DAssign var expr
+desugar (If expr thenStmt elseStmt) = DIf expr (ds thenStmt) (ds elseStmt)
+desugar (While expr stmt)           = DWhile expr (ds stmt)
+desugar (Sequence stmt1 stmt2)      = DSequence (ds stmt1) (ds stmt2)
+desugar (Skip)                      = DSkip
+desugar (Incr var)                  = DAssign var (Op (Var var) Plus (Val 1))
+desugar (For init cond upd body)    = DSequence (ds init) (DWhile cond (DSequence (ds body) (ds upd)))
+
+ds = desugar
 
 
 -- Exercise 4 -----------------------------------------
