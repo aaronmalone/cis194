@@ -1,5 +1,8 @@
 {-# OPTIONS_GHC -Wall #-}
-module HW04 where
+module HW04 
+   (
+     Poly(P)
+   ) where
 
 newtype Poly a = P [a]
 
