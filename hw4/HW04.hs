@@ -23,7 +23,21 @@ instance (Num a, Eq a) => Eq (Poly a) where
 -- Exercise 3 -----------------------------------------
 
 instance (Num a, Eq a, Show a) => Show (Poly a) where
-    show = undefined
+    show poly = if equalsZero poly then "0" else showNonZero poly
+      where equalsZero p          = p == P []
+            showNonZero (P terms) = "Dunno..."
+
+    {- show (P terms) = foldl1 (++) termsIncreasingDeg
+      where termsIncreasingDeg   = map showTerm zippedWithDeg
+            zippedWithDeg :: (Num a, Eq a, Show a) => [(a, Int)]
+            zippedWithDeg        = terms `zip` [0..]
+            showTerm (coef, deg) = show coef ++ "x^" ++ deg -}
+
+nonZeroCoef :: (Num a, Eq a, Show a) => (a, Int) -> Bool
+nonZeroCoef (num, _) = num /= 0
+
+showTerm :: (Num a, Show a) => a -> Int -> String
+showTerm coef degree = (show coef) ++ "x^" ++ (show degree)
 
 -- Exercise 4 -----------------------------------------
 
