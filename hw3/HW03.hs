@@ -184,5 +184,11 @@ fibonacci = slist [ Assign "F0" (Val 1)
                        )
                   ]
 
+runFibonacci :: Int -> Int
+runFibonacci = runStatement "In" "Out" fibonacci
+
 runStatement :: String -> String -> Statement -> Int -> Int
 runStatement inputVariable outputVariable statement input = (run (newState inputVariable input) statement) outputVariable
+
+fibonacciList :: Int -> [Int]
+fibonacciList n = map runFibonacci (take n [0..])
