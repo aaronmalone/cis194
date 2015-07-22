@@ -11,7 +11,11 @@ x = P [0, 1]
 -- Exercise 2 ----------------------------------------
 
 instance (Num a, Eq a) => Eq (Poly a) where
-    (==) = undefined
+    (==) (P y) (P z) = equalsOrZero y z
+      where equalsOrZero []     []     = True
+            equalsOrZero (k:ks) (j:js) = k == j && equalsOrZero ks js
+            equalsOrZero []     (j:js) = j == 0 && equalsOrZero [] js
+            equalsOrZero (k:ks) []     = k == 0 && equalsOrZero ks []
  
 -- Exercise 3 -----------------------------------------
 
