@@ -4,6 +4,8 @@ module HW04
      Poly(P)
    ) where
 
+import Data.List
+
 newtype Poly a = P [a]
 
 -- Exercise 1 -----------------------------------------
@@ -23,20 +25,21 @@ instance (Num a, Eq a) => Eq (Poly a) where
 -- Exercise 3 -----------------------------------------
 
 instance (Num a, Eq a, Show a) => Show (Poly a) where
-    show poly = if equalsZero poly then "0" else showNonZero poly
-      where equalsZero p          = p == P []
-            showNonZero (P terms) = "Dunno..."
+    show poly | poly == P [] = "0"
+    show (P coefs)           =
+       let zipWithDeg   = zip coefs [0..]
+           nonZeroTerms = filter nonZeroCoef zipWithDeg
+           termStrings  = map (uncurry showTerm) nonZeroTerms
+           reversed     = reverse termStrings
+           withPlusSign = intersperse " + " reversed
+       in foldl1 (++) withPlusSign
+       where nonZeroCoef (num, _) = num /= 0
 
-    {- show (P terms) = foldl1 (++) termsIncreasingDeg
-      where termsIncreasingDeg   = map showTerm zippedWithDeg
-            zippedWithDeg :: (Num a, Eq a, Show a) => [(a, Int)]
-            zippedWithDeg        = terms `zip` [0..]
-            showTerm (coef, deg) = show coef ++ "x^" ++ deg -}
-
-nonZeroCoef :: (Num a, Eq a, Show a) => (a, Int) -> Bool
-nonZeroCoef (num, _) = num /= 0
-
-showTerm :: (Num a, Show a) => a -> Int -> String
+showTerm :: (Num a, Eq a, Show a) => a -> Int -> String
+showTerm coef 0      = (show coef)
+showTerm 1    1      = "x"
+showTerm (-1) 1      = "-x"
+showTerm coef 1      = (show coef) ++ "x"
 showTerm coef degree = (show coef) ++ "x^" ++ (show degree)
 
 -- Exercise 4 -----------------------------------------
