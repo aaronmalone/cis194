@@ -34,6 +34,7 @@ instance (Num a, Eq a, Show a) => Show (Poly a) where
            withPlusSign = intersperse " + " reversed
        in foldl1 (++) withPlusSign
        where nonZeroCoef (num, _) = num /= 0
+             showTerm :: (Num a, Eq a, Show a) => a -> Int -> String
              showTerm coef 0      = (show coef)
              showTerm 1    1      = "x"
              showTerm (-1) 1      = "-x"
