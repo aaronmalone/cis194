@@ -1,4 +1,3 @@
-{-# OPTIONS_GHC -Wall #-}
 module Tests where
 
 import HW04
