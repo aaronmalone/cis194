@@ -69,8 +69,8 @@ numTimesList num numbers = map (* num) numbers
 instance Num a => Num (Poly a) where
     (+) = plus
     (*) = times
-    negate      = undefined
-    fromInteger = undefined
+    negate (P cs) = P (map negate cs)
+    fromInteger n = P [fromInteger n]
     -- No meaningful definitions exist
     abs    = undefined
     signum = undefined
