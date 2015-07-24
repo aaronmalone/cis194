@@ -44,12 +44,25 @@ instance (Num a, Eq a, Show a) => Show (Poly a) where
 -- Exercise 4 -----------------------------------------
 
 plus :: Num a => Poly a -> Poly a -> Poly a
-plus = undefined
+plus (P coefs1) (P coefs2) = P (addList coefs1 coefs2)
+  where addList ys       []   = ys
+        addList []       zs   = zs
+        addList (t:ts) (z:zs) = (t+z) : addList ts zs
 
 -- Exercise 5 -----------------------------------------
 
 times :: Num a => Poly a -> Poly a -> Poly a
-times = undefined
+times (P coefs1) (P coefs2) = foldl1 plus polysList
+  where polysList       = map P shifted
+        shifted         = zipWith (++) shiftZeroes listsMultiplied
+        shiftZeroes     = map (flip replicate $ 0) [0..]
+        listsMultiplied = listTimesList coefs1 coefs2
+
+listTimesList :: Num a => [a] -> [a] -> [[a]]
+listTimesList list1 list2 = map (flip numTimesList $ list1) list2
+
+numTimesList :: Num a => a -> [a] -> [a]
+numTimesList num numbers = map (* num) numbers
 
 -- Exercise 6 -----------------------------------------
 
