@@ -52,7 +52,7 @@ plus (P coefs1) (P coefs2) = P (addList coefs1 coefs2)
 -- Exercise 5 -----------------------------------------
 
 times :: Num a => Poly a -> Poly a -> Poly a
-times (P coefs1) (P coefs2) = foldl1 plus polysList
+times (P coefs1) (P coefs2) = sum polysList
   where polysList       = map P shifted
         shifted         = zipWith (++) shiftZeroes listsMultiplied
         shiftZeroes     = map (flip replicate $ 0) [0..]
