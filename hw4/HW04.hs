@@ -2,6 +2,8 @@
 module HW04 
    (
      Poly(P)
+   , x
+   , applyP
    ) where
 
 import Data.List
@@ -78,14 +80,16 @@ instance Num a => Num (Poly a) where
 -- Exercise 7 -----------------------------------------
 
 applyP :: Num a => Poly a -> a -> a
-applyP = undefined
+applyP (P coefs) n = sum $ zipWith solveTerm coefs [0..]
+  where solveTerm coef expn = coef * (n ^ expn)
 
 -- Exercise 8 -----------------------------------------
 
 class Num a => Differentiable a where
     deriv  :: a -> a
     nderiv :: Int -> a -> a
-    nderiv = undefined
+    nderiv 0 d = d
+    nderiv n d = deriv (nderiv (n-1) d)
 
 -- Exercise 9 -----------------------------------------
 
